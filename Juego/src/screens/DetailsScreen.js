@@ -1,12 +1,18 @@
 import {Button, StyleSheet, Text, View} from 'react-native'
-import React from 'react'
+import React , {useEffect} from 'react'
 
-const DetailsScreen = ({navigation}) => {
+const DetailsScreen = ({navigation, route}) => {
+
+    useEffect(() => {
+        console.log(route.params)
+    }, [])
+
     return (
         <View style={styles.container}>
-            <Text> DetailsScreen </Text>
+            {/* aqui abajo no me quiere funcionar el route.params.name me da error undefined*/}
+            <Text>Titulo</Text>
             <Button title="Go to Products" onPress={()=> navigation.navigate("Products")}/>
-            <Button title="Go to Categories" onPress={()=> navigation.navigate("Categories")}/>
+            <Button title="Go to Categories" onPress={()=> navigation.popToTop()}/>
         </View>
     )
 }

@@ -1,11 +1,25 @@
-import {Button, StyleSheet, Text, View} from 'react-native'
+import {Button, StyleSheet, Text, View, FlatList} from 'react-native'
 import React from 'react'
+import CaterogiesItem from '../components/CategoriesItem'
+import { CATEGORIES } from '../data/categories'
 
-const CategoriesScreen = ({navigation}) => {
+const CategoriesScreen = ({navigation, route}) => {
+
+  const handleSelectedCategory = item => {
+    navigation.navigate("Products", {
+      categoryId: item.id,
+      title: item.title,
+    })
+  }
+
+  const renderCategoriesItem = ({item}) => (
+  <View style={styles.categoriesContainer}>
+    <CaterogiesItem item={item} onSelected={handleSelectedCategory}/>
+  </View>
+  )
     return (
         <View style={styles.container}>
-            <Text>CategoriesScreen</Text>
-            <Button title="Go to Products" onPress={()=> navigation.navigate("Products")}/>
+          <FlatList data={CATEGORIES} renderItem={renderCategoriesItem} keyExtractor={item=>item.id}/>
         </View>
     )
 }
@@ -18,5 +32,9 @@ const styles =  StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+    categoriesContainer: {
+      padding: 10,
+      height: 155,
+    },
 })
 
