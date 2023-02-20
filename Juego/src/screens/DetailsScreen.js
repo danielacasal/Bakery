@@ -1,7 +1,9 @@
 import {Button, StyleSheet, Text, View} from 'react-native'
 import React , {useEffect} from 'react'
+import { useSelector } from 'react-redux'
 
 const DetailsScreen = ({navigation, route}) => {
+    const bread = useSelector(state => state.products.selected)
 
     useEffect(() => {
         console.log(route.params)
@@ -9,10 +11,10 @@ const DetailsScreen = ({navigation, route}) => {
 
     return (
         <View style={styles.container}>
-            {/* aqui abajo no me quiere funcionar el route.params.name me da error undefined*/}
-            <Text>Titulo</Text>
-            <Button title="Go to Products" onPress={()=> navigation.navigate("Products")}/>
-            <Button title="Go to Categories" onPress={()=> navigation.popToTop()}/>
+            <Text>{bread.name}</Text>
+            <Text>{bread.description}</Text>
+            <Text>{bread.price}</Text>
+            <Button title="Add to cart" onPress={() => console.log("agregar al carrito")}/>
         </View>
     )
 }

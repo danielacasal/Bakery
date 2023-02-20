@@ -1,25 +1,33 @@
-import {Button, StyleSheet, Text, View, FlatList} from 'react-native'
-import React from 'react'
+import {StyleSheet, FlatList} from 'react-native'
+import React, {useEffect} from 'react'
 import ProductsItem from '../components/ProductsItem'
-import { PRODUCTS } from "../data/products"
+
+import { useSelector, useDispatch} from "react-redux"
+import { selectedProduct, filteredProduct, } from '../store/actions/products.action'
 
 const ProductsScreen = ({navigation, route}) => {
+    const dispatch = useDispatch ()
+    const categoryProducts = useSelector(state => state.products.filteredProduct)
+    const category = useSelector(state=> state.categories.selected)
 
-    const newProducts = PRODUCTS.filter(product => product.category === route.params.categoryId)
+    useEffect(() => {
+        dispatch(filteredProduct(category.id))
+      }, [])
 
     const handleSelectedProduct = item => {
-        navigation.navigate("Details"), {
-            name: item.name
-        }
+        dispatch(selectedProduct(item.id))
+        navigation.navigate("Details", {
+            name: item.name,
+        })
     }
 
-const renderProductItem = ({item}) => (
-    <ProductsItem item={item} onSelected ={handleSelectedProduct}/>
-)
+    const renderProductItem = ({item}) => (
+        <ProductsItem item={item} onSelected ={handleSelectedProduct}/>
+    )
 
     return (
             <FlatList 
-            data={newProducts} 
+            data={categoryProducts} 
             renderItem={renderProductItem} 
             keyExtractor={item=> item.id}
             numColumns={2}
